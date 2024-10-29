@@ -7,24 +7,24 @@ Servidor NGINX utilizando WSL com ubuntu 20.04
   3. Digite `wsl --install`.
      > Ele instala por padrão a versão do Ubuntu na release mais recente, caso queira utilizar outra versão utilize o comando `wsl --install -d <Nome da distribuição>`.
   4. Reinicie sua máquina.
-  5. Agora abra novamente o PowerShell, de um `wsl -l -v` e verifique se foi instalado corretamente.
-  6. Vá à barra de pesquisa e abra o aplicativo do Ubuntu.
-     > Caso você tenha instalado outra distro so pesquisar o nome dela ou no proprio powershell digite `wsl` que ira abrir a distro linux.
+  5. Abra novamente o PowerShell, de um wsl -l -v e verifique se a instalação foi feita de forma correta.
+  6. Na barra de pesquisa selecione e abra o aplicativo Ubuntu.
+     > Caso tenha instalado outra distro, pesquise o nome da mesma ou digite wsl no powershell para abri-la.
 
 # Instalando o servidor Nginx.
   1. `sudo apt update`
   2. `sudo apt install nginx`
-  3. Agora com o Nginx instalado, iremos iniciar ele.
+  3. Com o Nginx instalado, inicie-o.
   4. `sudo systemctl nginx`
-  5. Verificaremos se o Nginx iniciou corretamente.
+  5. Verifique se o Nginx iniciou corretamente.
   6. `sudo systemctl nginx status`
-     > Se tudo der certo deve aparecer como `active(running)`
+     > Se realizado da forma correta, aparecerá a seguinte mensagem:`active(running)`
   7. Abra agora o seu navegador e digite http://localhost.
 
 # Criando o Script de atividade do Nginx.
-Iremos criar um Script simples, para verificar se o Nginx se encontra online ou offline. Criando um arquivo log no qual irá nos dizer a data e hora da última verificação, além de especificar se está online ou não.
+Crie um Script simples, afim de verificar se o Nginx se encontra online ou offline. Resultará em um arquivo log, cujo mesmo informará a data e hora da última verificação, além de especificar se está online ou não.
   
-1.Para questões de organização, recomendo que crie um diretorio via comando na pasta etc(/etc):
+1.Para manter a organização, é recomendado que crie um diretório via comando na pasta etc(/etc):
 
 `sudo mkdir /etc/scripts`
 
@@ -32,21 +32,22 @@ Iremos criar um Script simples, para verificar se o Nginx se encontra online ou 
 
 `sudo cd /scripts`
 
-3.Agora crie um Script com um nome que represente a função, no meu caso criei com nome em inglês chamado verify.sh, utilizando o comando "touch":
+3.Crie um Script com um nome que represente a função:
+>Ex.:Em um teste a pasta foi criada com nome em inglês “verify.sh”, utilizando o comando “touch”.
 
-Obs.: Sh é uma extensão no qual o Linux reconhecerá como script.
+>Obs.: Sh é uma extensão no qual o Linux reconhecerá como script.
 
 `sudo touch verify.sh`
 	
-4.O comando touch fica responsável pela criação do arquivo e, antes de fazermos as edições, recomendo que deixemos permissão de execução:
+4.O comando touch ficará responsável pela criação do arquivo e, antes de realizar as edições, é recomendado que deixe a permissão de execução:
 
 `sudo chmod +x verify.sh`
 
-5.Assim podemos executar ele para realizar os testes e também posteriormente de forma automatizada, agora iremos abrir ele via terminal para a edição utilizando o comando "vi":
+5.Em continuidade, poderá executar o script para realizar os testes, posteriormente de forma automatizada. Após, abrir o script via terminal para a edição, utilizando o comando "vi":
 
 `sudo vi verify.sh`
 	
-6.Aqui podemos adicionar linhas de comando e comentários utilizando o "i" para abrir em modo de "edição". A explicação do Script estará nos comentários representados por "#":
+6.Há possibilidade de adicionar linhas de comando e comentários utilizando o "i" para abrir em modo de "edição". A explicação do Script estará nos comentários representados por "#":
   
     # !/bin/bash
     
@@ -90,12 +91,13 @@ Obs.: Sh é uma extensão no qual o Linux reconhecerá como script.
           echo "Nginx encontra-se fora de serviço"
         fi
 
-7.Agora iremos configurar para este script executar sempre que iniciarmos o servidor ou a cada 5 minutos.
+7.Configure para que este script comece sua execução sempre que iniciarmos o servidor ou a cada 5 minutos.
 
 `sudo crontab -e`
 	
-8.Selecione a primeira opção /bin/nano, agora na tela abaixo você irá colocar o seguinte comando.
+8.Selecione a primeira opção “/bin/nano”. Na tela abaixo coloque o seguinte comando.
 
     */5 * * * * /etc/scripts/verify.sh
 
-9.O `*/5` faz com que o crontab entenda que é para executar a cada 5 minutos, sem esse "*/" antes do cinco faria com que o servidor só rodasse o script a cara 5 minutos por hora. Ex: 01:05/02:05 e assim por diante.
+9.O comando "*/5" faz com que o crontab entenda que deverá executar a cada 5 minutos. Retirando o asterisco e a barra deste comando "5", observa-se que o servidor apenas rodará o script a cada 5 minutos por hora. 
+>Ex.: 01:05/02:05 e assim por diante.
