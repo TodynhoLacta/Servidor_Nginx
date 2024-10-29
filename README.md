@@ -34,7 +34,7 @@ Iremos criar um Script simples, para verificar se o Nginx se encontra online ou 
 
 3.Agora crie um Script com um nome que represente a função, no meu caso criei com nome em inglês chamado verify.sh, utilizando o comando "touch":
 
-obs: Sh é uma extensão no qual o Linux reconhecerá como script.
+Obs.: Sh é uma extensão no qual o Linux reconhecerá como script.
 
 `sudo touch verify.sh`
 	
